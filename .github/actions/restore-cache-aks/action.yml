@@ -10,7 +10,7 @@ runs:
     shell: bash
     run: |
       if [ "${{ inputs.target-platform }}" = "win" ]; then
-        cache_path=/mnt/win-cache/$DEPSHASH.tgz
+        cache_path=/mnt/win-cache/$DEPSHASH.tar
       else
         cache_path=/mnt/cross-instance-cache/$DEPSHASH.tar
       fi
