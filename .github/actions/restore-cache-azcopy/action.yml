@@ -51,7 +51,8 @@ runs:
   - name: Clean SAS Key
     shell: bash
     run: rm -f sas-token
-  - name: Unzip and Ensure Src Cache    
+  - name: Unzip and Ensure Src Cache
+    if: ${{ inputs.target-platform == 'macos' }}
     shell: bash
     run: |
       echo "Downloaded cache is $(du -sh $DEPSHASH.tar | cut -f1)"
@@ -80,3 +81,35 @@ runs:
 
       echo "Wiping Electron Directory"
       rm -rf src/electron
+
+  - name: Unzip and Ensure Src Cache (Windows)
+    if: ${{ inputs.target-platform == 'win' }}
+    shell: powershell
+    run: |
+      $src_cache = "$env:DEPSHASH.tar"
+      $cache_size = $(Get-Item $src_cache).length
+      Write-Host "Downloaded cache is $cache_size"
+      if ($cache_size -eq 0) {
+        Write-Host "Cache is empty - exiting"
+        exit 1
+      }
+
+      $TEMP_DIR=New-Item -ItemType Directory -Path temp-cache
+      $TEMP_DIR_PATH = $TEMP_DIR.FullName
+      C:\ProgramData\Chocolatey\bin\7z.exe -y x $src_cache -o"$TEMP_DIR_PATH"
+      C:\ProgramData\Chocolatey\bin\7z.exe
+      if (Test-Path "temp-cache\src") {
+        Write-Host "Relocating Cache"
+        Remove-Item -Recurse -Force src
+        Move-Item temp-cache\src src
+
+        Write-Host "Deleting zip file"
+        Remove-Item -Force $src_cache
+      }
+      if (-Not (Test-Path "src\third_party\blink")) {
+        Write-Host "Cache was not correctly restored - exiting"
+        exit 1
+      }
+
+      Write-Host "Wiping Electron Directory"
+      Remove-Item -Recurse -Force src\electron
