@@ -19,12 +19,19 @@ runs:
       # 7. Ensuring we are using the correct ninja and adding it to PATH
       # 8. Fixing angle (wrong remote)
       run : |
+        echo "VERIFY CIPD"
+        cipd --help
+        echo "DONE VERIFY CIPD"
         # Fix clang
         rm -rf src/third_party/llvm-build
         python3 src/tools/clang/scripts/update.py
 
         # Fix esbuild
-        echo 'infra/3pp/tools/esbuild/${platform}' `gclient getdep --deps-file=src/third_party/devtools-frontend/src/DEPS -r 'third_party/esbuild:infra/3pp/tools/esbuild/${platform}'` > esbuild_ensure_file
+        if [ "${{ inputs.target-platform }}" = "macos" ]; then
+          echo 'infra/3pp/tools/esbuild/${platform}' `gclient getdep --deps-file=src/third_party/devtools-frontend/src/DEPS -r 'third_party/esbuild:infra/3pp/tools/esbuild/${platform}'` > esbuild_ensure_file
+        else          
+          echo 'infra/3pp/tools/esbuild/${platform}' `gclient getdep --deps-file=src/third_party/devtools-frontend/src/DEPS -r third_party/esbuild:infra/3pp/tools/esbuild/${platform}` > esbuild_ensure_file
+        fi
         cipd ensure --root src/third_party/devtools-frontend/src/third_party/esbuild -ensure-file esbuild_ensure_file
 
         # Fix rustc
@@ -37,7 +44,7 @@ runs:
           cipd ensure --root src/buildtools/mac -ensure-file gn_ensure_file
         fi
         if [ "${{ inputs.target-platform }}" = "win" ]; then
-          echo 'gn/gn/windows-amd64' `gclient getdep --deps-file=src/DEPS -r 'src/buildtools/win:gn/gn/windows-amd64'` > gn_ensure_file
+          echo 'gn/gn/windows-amd64' `gclient getdep --deps-file=src/DEPS -r src/buildtools/win:gn/gn/windows-amd64` > gn_ensure_file
           cipd ensure --root src/buildtools/win -ensure-file gn_ensure_file
         fi
 
