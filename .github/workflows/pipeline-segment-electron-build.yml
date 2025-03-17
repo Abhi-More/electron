@@ -181,7 +181,7 @@ jobs:
         echo "DEPSHASH=$(cat src/electron/.depshash)" >> $GITHUB_ENV
     - name: Add CHROMIUM_BUILDTOOLS_PATH to env
       run: echo "CHROMIUM_BUILDTOOLS_PATH=$(pwd)/src/buildtools" >> $GITHUB_ENV
-    - name: Fix Sync (macOS)
+    - name: Fix Sync
       if: ${{ inputs.target-platform != 'linux' }}
       uses: ./src/electron/.github/actions/fix-sync
       with:
