@@ -31,11 +31,7 @@ runs:
       fi
 
       mkdir temp-cache
-      if [ "${{ inputs.target-platform }}" = "win" ]; then
-        tar -xzf $cache_path -C temp-cache
-      else
-        tar -xf $cache_path -C temp-cache
-      fi
+      tar -xf $cache_path -C temp-cache
       echo "Unzipped cache is $(du -sh temp-cache/src | cut -f1)"
 
       if [ -d "temp-cache/src" ]; then
