@@ -6,6 +6,13 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Unzip and Ensure Src Cache (Windows)
+      if: ${{ inputs.target-platform == 'win' }}
+      shell: powershell
+      run: |
+        echo "VERIFY CIPD"
+        cipd --help
+        echo "DONE VERIFY CIPD"
     - name: Fix Sync
       shell: bash
       # This step is required to correct for differences between "gclient sync"
