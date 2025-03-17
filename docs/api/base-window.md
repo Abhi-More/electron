@@ -513,7 +513,7 @@ visible to users.
 
 #### `win.snapped` _Windows_
 
-A `boolean` property that indicates whether the window is arranged via Snap.
+A `boolean` property that indicates whether the window is arranged via [Snap.](https://support.microsoft.com/en-us/windows/snap-your-windows-885a9b1e-a983-a3b1-16cd-c531795e6241)
 
 ### Instance Methods
 
@@ -1270,12 +1270,10 @@ Returns `boolean` - Whether the menu bar is visible.
 
 #### `win.isSnapped()` _Windows_
 
-Returns `boolean` - whether the window is arranged via Snap.
+Returns `boolean` - whether the window is arranged via [Snap.](https://support.microsoft.com/en-us/windows/snap-your-windows-885a9b1e-a983-a3b1-16cd-c531795e6241)
 
 The window is snapped via buttons shown when the mouse is hovered over window
 maximize button, or by dragging it to the edges of the screen.
-
-See [Windows Documentation](https://support.microsoft.com/en-us/windows/snap-your-windows-885a9b1e-a983-a3b1-16cd-c531795e6241) for more information.
 
 #### `win.setVisibleOnAllWorkspaces(visible[, options])` _macOS_ _Linux_
 
