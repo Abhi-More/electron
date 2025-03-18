@@ -13,11 +13,11 @@ limitations of an Electron AppX package are.
 ## Background and Requirements
 
 Windows 10 "Anniversary Update" is able to run win32 `.exe` binaries by
-launching them together with a virtualized filesystem and registry. Both are
+launching them together with a virtualized file system and registry. Both are
 created during compilation by running app and installer inside a Windows
 Container, allowing Windows to identify exactly which modifications to the
 operating system are done during installation. Pairing the executable with a
-virtual filesystem and a virtual registry allows Windows to enable one-click
+virtual file system and a virtual registry allows Windows to enable one-click
 installation and uninstallation.
 
 In addition, the exe is launched inside the appx model - meaning that it can use
